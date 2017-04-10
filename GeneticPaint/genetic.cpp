@@ -97,11 +97,13 @@ void Group::init_target(std::string image_path) {
 Group Group::first_generation(int n_chromosome, int n_triangles) {
 	CHECK(n_chromosome > 0 && n_triangles > 0);
 	Group popu;
+#pragma omp parallel for schedule(dynamic)
 	FOR(i, n_chromosome) {
 		Triangles trs;
 		FOR(j, n_triangles) {
 			trs.push_back(random_triangle(target_image.cols, target_image.rows));
 		}
+#pragma omp critical
 		popu.chroms.emplace_back(trs);
 	}
 	return popu;
@@ -109,11 +111,14 @@ Group Group::first_generation(int n_chromosome, int n_triangles) {
 
 void Group::calc_similarity() {
 	similarity.clear();
-	FOR(i, chroms.size()) {
+	similarity.resize(chroms.size());
+
+#pragma omp parallel for schedule(dynamic)
+	for (int i = 0; i < (int)chroms.size(); ++i) {
 		auto image = chroms[i].render(target_image.cols, target_image.rows);
 		double fit = 100.0 - difference_between(image, target_image);
 		if (fit < 0) fit = 0;
-		similarity.push_back(fit);
+		similarity[i] = fit;
 	}
 }
 
@@ -154,8 +159,11 @@ Group Group::select() {
 	}
 	// select
 	Group next;
+	next.chroms.resize(chroms.size());
 	Random random;
-	for (size_t i = 0; i < chroms.size(); ++i) {
+
+#pragma omp parallel for schedule(dynamic)
+	for (int i = 0; i < (int)chroms.size(); ++i) {
 		float rate = random.random<float>(1);
 		int l = 0, r = fitness_sum.size() - 1;
 		int k = -1;
@@ -170,8 +178,13 @@ Group Group::select() {
 			}
 		}
 		//LOG("%d %f %f\n", k, fitness_sum[k], rate);
-		next.chroms.push_back(chroms[k]);
+		/*next.chroms.push_back(chroms[k]);
 		auto &last = next.chroms[next.chroms.size() - 1];
+		last.data = new byte[last.size_in_byte];
+		memcpy(last.data, chroms[k].data, last.size_in_byte);*/
+
+		next.chroms[i] = chroms[k];
+		auto &last = next.chroms[i];
 		last.data = new byte[last.size_in_byte];
 		memcpy(last.data, chroms[k].data, last.size_in_byte);
 	}

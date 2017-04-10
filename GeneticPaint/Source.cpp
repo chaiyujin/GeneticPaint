@@ -9,13 +9,16 @@ int main() {
 
 	Yuki::Directory::mkdir("result");
 	Group::init_target("small.jpg");
-	Group group = Group::first_generation(100, 5);
+	LOG("Generating first...\n");
+	Group group = Group::first_generation(1000, 100);
 	int iter = 0;
 	while (1) {
+		//Yuki::StopWatch watch("Iteration");
+		LOG("Iteration %d\n", iter);
 		group = group.evolve(0.6, 0.01);
 		int index = group.best_chromosome_index();
 		int sim = (int)group.similarity_at(index);
-		LOG("Best at %d %f\n", index, sim);
+		LOG("Best at %d %d\n", index, sim);
 		Mat img = group.render(index);
 		if (sim > 80) {
 			char buf[512];
@@ -24,6 +27,8 @@ int main() {
 		}
 		if (sim > 95) break;
 		++iter;
+		/*imshow("test", img);
+		waitKey(1);*/
 	}
 
 	system("pause");
