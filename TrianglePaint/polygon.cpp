@@ -2,8 +2,19 @@
 using namespace cv;
 
 void Polygon::add() {
-	if (vertices.size() < Tools::Max_Vertices)
-		vertices.push_back(random_vertex(Tools::Max_Width, Tools::Max_Height));
+	if (vertices.size() < Tools::Max_Vertices) {
+		int pos = Tools::random_int(1, vertices.size() - 1);
+		auto &prev = vertices[pos - 1];
+		auto &next = vertices[pos + 1];
+		Vertex vet;
+		vet.x = (prev.x + next.x) / 2;
+		vet.y = (prev.y + next.y) / 2;
+		vertices.push_back(Vertex());
+		for (int i = pos; i + 1 < vertices.size(); ++i) {
+			vertices[i + 1] = vertices[i];
+		}
+		vertices[pos] = vet;
+	}
 }
 
 void Polygon::remove() {
@@ -16,23 +27,18 @@ void Polygon::remove() {
 }
 
 void Polygon::mutate(bool mutate_vertex, bool mutate_color) {
-	if (mutate_vertex) {
-		if (Tools::will_mutate(Tools::Add_Vertex_Rate)) {
-			add();
-		}
-		if (Tools::will_mutate(Tools::Remove_Vertex_Rate)) {
-			remove();
-		}
-		/*if (Tools::will_mutate(Tools::Move_Vertex_Rate)) {
-			move();
-		}*/
-		FOR(i, vertices.size()) {
-			vertices[i].mutate();
-		}
+	if (Tools::will_mutate(Tools::Add_Vertex_Rate)) {
+		add();
 	}
-	if (mutate_color) {
-		color.mutate();
+	if (Tools::will_mutate(Tools::Remove_Vertex_Rate)) {
+		remove();
 	}
+	FOR(i, vertices.size()) {
+		vertices[i].mutate();
+	}
+		
+	
+	color.mutate();
 }
 
 void Polygon::render_on(cv::Mat canvas) const {
@@ -131,7 +137,6 @@ void Polygons::mutate() {
 	if (Tools::will_mutate(Tools::Move_Polygon_Rate)) {
 		this->move();
 	}
-
 	for (int i = 0; i < list.size(); ++i)
 		list[i].mutate();
 }

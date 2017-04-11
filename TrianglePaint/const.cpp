@@ -34,10 +34,10 @@ int Tools::Max_Width = 256;
 int Tools::Max_Height = 256;
 // vertex
 int Tools::Vertex_Max_Move_Rate = 1500;
-int Tools::Vertex_Mid_Move_Rate = 100;
-int Tools::Vertex_Min_Move_Rate = 20;
-int Tools::Vertex_Mid_Move_Range = 10;
-int Tools::Vertex_Min_Move_Range = 1;
+int Tools::Vertex_Mid_Move_Rate = 1500;
+int Tools::Vertex_Min_Move_Rate = 1500;
+int Tools::Vertex_Mid_Move_Range = 20;
+int Tools::Vertex_Min_Move_Range = 3;
 // color
 int Tools::Color_Mutate_Rate = 1500;
 int Tools::Color_Min = 0;
@@ -45,17 +45,17 @@ int Tools::Color_Max = 256;
 int Tools::Alpha_Min = 30;
 int Tools::Alpha_Max = 60;
 // triangle
-int Tools::Add_Triangle_Rate = 500;
+int Tools::Add_Triangle_Rate = 700;
 int Tools::Add_New_Triangle_Rate = 2;
-int Tools::Remove_Triangle_Rate = 1200;
-int Tools::Move_Triangle_Rate = 500;
+int Tools::Remove_Triangle_Rate = 1500;
+int Tools::Move_Triangle_Rate = 700;
 // Polygon
-int Tools::Max_Vertices = 50;
-int Tools::Add_Vertex_Rate = 200;
-int Tools::Remove_Vertex_Rate = 800;
-int Tools::Move_Vertex_Rate = 800;
+int Tools::Max_Vertices = 10;
+int Tools::Add_Vertex_Rate = 700;
+int Tools::Remove_Vertex_Rate = 1500;
+int Tools::Move_Vertex_Rate = 700;
 // Polygons
-int Tools::Add_Polygon_Rate = 200;
+int Tools::Add_Polygon_Rate = 700;
 int Tools::Add_New_Polygon_Rate = 2;
-int Tools::Remove_Polygon_Rate = 800;
-int Tools::Move_Polygon_Rate = 500;
+int Tools::Remove_Polygon_Rate = 1500;
+int Tools::Move_Polygon_Rate = 700;

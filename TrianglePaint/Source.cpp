@@ -99,12 +99,15 @@ void polygon_draw() {
 	Mat image = imread("small.jpg");
 	Polygons polys;
 	int iter = 0;
+	int last_size = -1;
+	int same_size_count = 0;
+	int Refresh_Limit = 5000;
 	double error = polys.difference_with(image);
 	while (1) {
 		Polygons next(polys);
 		next.mutate();
 		double next_err = next.difference_with(image);
-		if (next_err < error) {
+		if (next_err <= error) {
 			polys = next;
 			error = next_err;
 		}
@@ -116,9 +119,24 @@ void polygon_draw() {
 				imwrite("result.jpg", img);
 			}
 		}
-		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
+		LOG("Iter %d, Polygons %d, Points %f, NewPolyRate %d, Limit %d, Err %f\r",
 			iter++, polys.size(), 
 			polys.size_of_vertices() / (float)polys.size(),
+			Tools::Add_Polygon_Rate,
+			Refresh_Limit,
 			error);
+		if (polys.size() == last_size) {
+			++same_size_count;
+		}
+		else {
+			same_size_count = 1;
+		}
+		if (same_size_count > Refresh_Limit &&
+			Tools::Add_Polygon_Rate > 6) {
+			//Tools::Add_Polygon_Rate /= 2;
+			Refresh_Limit += 5000;
+			//Tools::update_rate();
+		}
+		last_size = polys.size();
 	}
 }

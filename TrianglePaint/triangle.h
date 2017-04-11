@@ -68,8 +68,8 @@ public:
 		FOR(i, 3) {
 			v[i].x = vet.x + Tools::random_int(-3, 3);
 			v[i].y = vet.y + Tools::random_int(-3, 3);
-			v[i].x = Tools::clamp(v[i].x, 0, Tools::Max_Width);
-			v[i].y = Tools::clamp(v[i].y, 0, Tools::Max_Height);
+			v[i].x = Tools::clamp(v[i].x, 0, Tools::Max_Width - 1);
+			v[i].y = Tools::clamp(v[i].y, 0, Tools::Max_Height - 1);
 		}
 		color = random_color();
 	}

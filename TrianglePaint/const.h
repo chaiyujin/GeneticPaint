@@ -40,4 +40,10 @@ public:
 	static int Add_New_Polygon_Rate;
 	static int Remove_Polygon_Rate;
 	static int Move_Polygon_Rate;
+
+	static void update_rate() {
+		Add_Polygon_Rate /= 2;
+		Move_Polygon_Rate /= 1.5f;
+		Color_Mutate_Rate /= 2;
+	}
 };

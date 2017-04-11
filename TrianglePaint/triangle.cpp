@@ -95,15 +95,15 @@ void Vertex::mutate() {
 	}
 
 	if (Tools::will_mutate(Tools::Vertex_Mid_Move_Rate)) {
-		x += Tools::random_int(-Tools::Vertex_Mid_Move_Range, Tools::Vertex_Mid_Move_Range);
-		y += Tools::random_int(-Tools::Vertex_Mid_Move_Range, Tools::Vertex_Mid_Move_Range);
+		x += Tools::random_int(-Tools::Vertex_Mid_Move_Range, Tools::Vertex_Mid_Move_Range + 1);
+		y += Tools::random_int(-Tools::Vertex_Mid_Move_Range, Tools::Vertex_Mid_Move_Range + 1);
 		x = Tools::clamp(x, 0, Tools::Max_Width - 1);
 		y = Tools::clamp(y, 0, Tools::Max_Height - 1);
 	}
 
 	if (Tools::will_mutate(Tools::Vertex_Min_Move_Rate)) {
-		x += Tools::random_int(-Tools::Vertex_Min_Move_Range, Tools::Vertex_Min_Move_Range);
-		y += Tools::random_int(-Tools::Vertex_Min_Move_Range, Tools::Vertex_Min_Move_Range);
+		x += Tools::random_int(-Tools::Vertex_Min_Move_Range, Tools::Vertex_Min_Move_Range + 1);
+		y += Tools::random_int(-Tools::Vertex_Min_Move_Range, Tools::Vertex_Min_Move_Range + 1);
 		x = Tools::clamp(x, 0, Tools::Max_Width - 1);
 		y = Tools::clamp(y, 0, Tools::Max_Height - 1);
 	}
