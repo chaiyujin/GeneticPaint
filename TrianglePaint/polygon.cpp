@@ -78,15 +78,15 @@ void Polygon::render_on(cv::Mat canvas) {
 
 /*-------------------------------------*/
 void Polygons::add() {
-	if (list.size() == 0 || Tools::will_mutate(Tools::Add_New_Polygon_Rate)) {
-		list.push_back(Polygon());
+	list.push_back(Polygon());
+	/*if (list.size() == 0 || Tools::will_mutate(Tools::Add_New_Polygon_Rate)) {
 	}
 	else {
 		int pos = Tools::random_int(0, list.size());
 		Polygon new_one = list[pos];
 		new_one.mutate(true, false);
 		list.push_back(new_one);
-	}
+	}*/
 }
 
 void Polygons::remove() {

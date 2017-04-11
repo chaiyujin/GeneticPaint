@@ -53,11 +53,22 @@ public:
 	void mutate();
 };
 
+Vertex   random_vertex(int width, int height);
+Color	 random_color();
+
+
 // gene struct for triangle mesh
+class Triangle;
+void render_triangle(cv::Mat canvas, const Triangle &triangle);
 class Triangle {
 private:
 public:
-	Triangle() {}
+	Triangle() {
+		FOR(i, 3) {
+			v[i] = random_vertex(Tools::Max_Width, Tools::Max_Height);
+		}
+		color = random_color();
+	}
 	Triangle(const Triangle &cp) {
 		FOR(i, 3) v[i] = cp.v[i];
 		color = cp.color;
@@ -72,6 +83,9 @@ public:
 	// Color
 	Color color;
 
+	void render_on(cv::Mat image) {
+		render_triangle(image, *this);
+	}
 	void mutate(bool vertex = true, bool color = true);
 };
 
@@ -85,6 +99,9 @@ public:
 
 	void push_back(const Triangle &tr) {
 		list.push_back(tr);
+	}
+	void pop_back() {
+		list.pop_back();
 	}
 
 	size_t size() const { return list.size(); }
@@ -108,13 +125,10 @@ public:
 	}
 };
 
-Vertex   random_vertex(int width, int height);
-Color	 random_color();
 Triangle random_triangle(int width, int height);
 
 void print(Triangle &tr);
 void draw_line(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int>> &range);
-void render_triangle(cv::Mat canvas, const Triangle &triangle);
 inline void render_triangles(cv::Mat canvas, const Triangles &triangles) {
 	for (int i = triangles.size() - 1; i >= 0; --i) {
 		render_triangle(canvas, triangles[i]);

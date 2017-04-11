@@ -13,13 +13,7 @@ public:
 		}
 		color = random_color();
 	}
-	/*Polygon(const Polygon &cp) : vertices(cp.vertices), color(cp.color) {}
 
-	Polygon &operator=(const Polygon &cp) {
-		vertices = cp.vertices;
-		color = cp.color;
-	}*/
-	
 	size_t size() const { return vertices.size(); }
 	Vertex &operator[](int index) {
 		CHECK(index >= 0 && index < vertices.size());
@@ -48,6 +42,9 @@ public:
 
 	void push_back(const Polygon &tr) {
 		list.push_back(tr);
+	}
+	void pop_back() {
+		list.pop_back();
 	}
 
 	size_t size() const { return list.size(); }

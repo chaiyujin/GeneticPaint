@@ -223,15 +223,13 @@ double difference_between(cv::Mat img0, cv::Mat img1) {
 	CHECK(img0.cols == img1.cols && img0.rows == img1.rows);
 	double error = 0.0;
 
-//#pragma omp parallel for schedule(dynamic)
 	FOR(r, img0.rows) {
 		byte *data0 = img0.ptr<byte>(r);
 		byte *data1 = img1.ptr<byte>(r);
 		FOR(c, img0.cols) {
 			FOR(k, 3) {
 				const int index = c * 3 + k;
-//#pragma omp critical
-				error += abs(data0[index] - data1[index]);
+				error += (data0[index] - data1[index]) * (data0[index] - data1[index]);
 			}
 		}
 	}

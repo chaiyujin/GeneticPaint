@@ -10,7 +10,7 @@ void triangle_draw();
 void polygon_draw();
 
 int main() {
-
+	//triangle_draw();
 	polygon_draw();
 
 	system("pause");
@@ -49,7 +49,7 @@ void test_poly() {
 }
 
 void triangle_draw() {
-	Mat image = imread("chrome.jpg");
+	Mat image = imread("small.jpg");
 	Triangles triangles;
 	int iter = 0;
 	double error = triangles.difference_with(image);
@@ -74,7 +74,7 @@ void triangle_draw() {
 }
 
 void polygon_draw() {
-	Mat image = imread("chrome.jpg");
+	Mat image = imread("small.jpg");
 	Polygons polys;
 	int iter = 0;
 	double error = polys.difference_with(image);
