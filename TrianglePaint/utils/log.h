@@ -9,7 +9,7 @@
 #ifndef __YUKI_UTILS_LOG_H__
 #define __YUKI_UTILS_LOG_H__
 
-// #define CHECK_LEVEL_NONE // uncomment this line to disable runtime check
+ #define CHECK_LEVEL_NONE // uncomment this line to disable runtime check
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -45,6 +45,7 @@ namespace Yuki {
 	printf("Error in [%s] (line: %d) : ", __FUNCTION__, __LINE__);\
 	printf(fmt, ##__VA_ARGS__);\
 	system("pause");exit(1); } while (0);
+#ifndef CHECK_LEVEL_NONE
 #define CHECK(assertion) do {\
 		bool flag = assertion;\
 		if (!flag) {\
@@ -52,6 +53,9 @@ namespace Yuki {
 			system("pause");exit(1);\
 		}\
 	} while (0);
+#else
+#define CHECK() {};
+#endif
 }
 
 #endif  // !__YUKI_UTILS_LOG_H__

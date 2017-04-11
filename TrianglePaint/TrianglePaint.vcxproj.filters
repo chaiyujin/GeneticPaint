@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\utils">
-      <UniqueIdentifier>{f223a862-1433-4799-a1e3-edc33c69d2f7}</UniqueIdentifier>
+      <UniqueIdentifier>{dfe94093-7dea-4050-b913-30c66b9a4d4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +24,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="genetic.cpp">
+    <ClCompile Include="const.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +32,13 @@
     <ClInclude Include="triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utils\config.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
     <ClInclude Include="utils\defines.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\directory.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\config.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\log.h">
@@ -53,7 +53,7 @@
     <ClInclude Include="utils\yuki.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="genetic.h">
+    <ClInclude Include="const.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
