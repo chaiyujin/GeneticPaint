@@ -24,6 +24,7 @@ public:
 	// color
 	static int Color_Mutate_Rate;
 	static int Color_Min, Color_Max;
+	static int Alpha_Min, Alpha_Max;
 	// triangles
 	static int Add_Triangle_Rate;
 	static int Add_New_Triangle_Rate;

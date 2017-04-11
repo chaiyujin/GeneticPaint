@@ -8,8 +8,15 @@ public:
 	Color color;
 
 	Polygon() : vertices(0) {
+		Vertex vet = random_vertex(Tools::Max_Width, Tools::Max_Height);
 		FOR(i, 3) {
-			vertices.push_back(random_vertex(Tools::Max_Width, Tools::Max_Height));
+			Vertex vn;
+			vn.x = vet.x + Tools::random_int(-3, 3);
+			vn.y = vet.y + Tools::random_int(-3, 3);
+			vn.x = Tools::clamp(vn.x, 0, Tools::Max_Width);
+			vn.y = Tools::clamp(vn.y, 0, Tools::Max_Height);
+			vn.mutate();
+			vertices.push_back(vn);
 		}
 		color = random_color();
 	}
@@ -29,7 +36,7 @@ public:
 	//void move();
 	void mutate(bool vertex = true, bool color = true);
 
-	void render_on(cv::Mat canvas);
+	void render_on(cv::Mat canvas) const;
 };
 
 class Polygons {
@@ -68,7 +75,7 @@ public:
 	void remove();
 	void move();
 	void mutate();
-	cv::Mat render();
+	cv::Mat render() const;
 	double difference_with(cv::Mat &image) {
 		auto img = render();
 		return difference_between(img, image);

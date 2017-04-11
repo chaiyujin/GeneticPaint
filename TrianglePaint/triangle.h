@@ -64,8 +64,12 @@ class Triangle {
 private:
 public:
 	Triangle() {
+		Vertex vet = random_vertex(Tools::Max_Width, Tools::Max_Height);
 		FOR(i, 3) {
-			v[i] = random_vertex(Tools::Max_Width, Tools::Max_Height);
+			v[i].x = vet.x + Tools::random_int(-3, 3);
+			v[i].y = vet.y + Tools::random_int(-3, 3);
+			v[i].x = Tools::clamp(v[i].x, 0, Tools::Max_Width);
+			v[i].y = Tools::clamp(v[i].y, 0, Tools::Max_Height);
 		}
 		color = random_color();
 	}
@@ -130,7 +134,7 @@ Triangle random_triangle(int width, int height);
 void print(Triangle &tr);
 void draw_line(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int>> &range);
 inline void render_triangles(cv::Mat canvas, const Triangles &triangles) {
-	for (int i = triangles.size() - 1; i >= 0; --i) {
+	for (int i = 0; i < triangles.size(); ++i) {
 		render_triangle(canvas, triangles[i]);
 	}
 }

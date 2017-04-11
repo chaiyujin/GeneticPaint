@@ -15,7 +15,10 @@ public:
 	Chromosome() : error(INFINITY) {}
 	Chromosome(const T &s) : shape(s), error(INFINITY) {}
 
-	cv::Mat render() { shape.render(img); }
+	bool operator<(const Chromosome &cp) const {
+		return error < cp.error;
+	}
+	cv::Mat render() const { return shape.render(); }
 
 	void cross_with(Chromosome &chrom) {
 		int len_this = chrom.shape.size();
@@ -25,8 +28,7 @@ public:
 		int i = Tools::random_int(0, len);
 		while (i < shape.size() || i < chrom.shape.size()) {
 			if (i < shape.size() && i < chrom.shape.size()) {
-				T tmp;
-				tmp = shape[i];
+				auto tmp = shape[i];
 				shape[i] = chrom.shape[i];
 				chrom.shape[i] = tmp;
 			}
@@ -45,15 +47,11 @@ public:
 };
 
 template <class T>
-inline bool cmp(const Chromosome<T> &c0, const Chromosome<T> &c1) {
-	return c0.error < c1.error;
-}
-
-template <class T>
 class Group {
+private:
+	std::vector<Chromosome<T>> chroms;
 public:
 	cv::Mat target_image;
-	std::vector<Chromosome> chroms;
 
 	Group(cv::Mat target) : target_image(target), chroms(0) {}
 	void generate_chromosome(int n_chromosome) {
@@ -66,11 +64,11 @@ public:
 		cv::Mat img = n.render();
 		chroms[chroms.size() - 1].error = difference_between(img, target_image);
 	}
-	Chromosome &operator[](int index) {
+	Chromosome<T> &operator[](int index) {
 		CHECK(index >= 0 && index < chroms.size());
 		return chroms[index];
 	}
-	const Chromosome &operator[](int index) const {
+	const Chromosome<T> &operator[](int index) const {
 		CHECK(index >= 0 && index < chroms.size());
 		return chroms[index];
 	}
@@ -85,10 +83,11 @@ public:
 		for (int i = 0; i < chroms.size(); ++i) {
 			all.chroms.push_back(chroms[i]);
 		}
+		// calculate the error
 		for (int i = 0; i < next.size(); ++i) {
 			all.push_back(next[i]);
 		}
-		sort(all.chroms.begin(), all.chroms.end(), cmp);
+		std::sort(all.chroms.begin(), all.chroms.end());
 		while (all.size() > size()) all.chroms.pop_back();
 		return all;
 	}
@@ -97,7 +96,7 @@ public:
 			next.chroms.push_back(chroms[i]);
 		}
 	}
-	void cross(float rate) {
+	void cross(float cross_rate) {
 		Yuki::Random random;
 		for (int i = 0; i < chroms.size(); ++i) {
 			float rate = random.random<float>(1);

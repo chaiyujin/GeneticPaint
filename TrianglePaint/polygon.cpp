@@ -35,7 +35,7 @@ void Polygon::mutate(bool mutate_vertex, bool mutate_color) {
 	}
 }
 
-void Polygon::render_on(cv::Mat canvas) {
+void Polygon::render_on(cv::Mat canvas) const {
 	/*for (int i = 0; i + 2 < vertices.size(); ++i) {
 		Triangle triangle;
 		triangle.v[0] = vertices[i];
@@ -79,6 +79,12 @@ void Polygon::render_on(cv::Mat canvas) {
 /*-------------------------------------*/
 void Polygons::add() {
 	list.push_back(Polygon());
+	/*int pos = Tools::random_int(0, list.size());
+	for (int i = list.size() - 1; i > pos; --i) {
+		Polygon tmp = list[i];
+		list[i] = list[i - 1];
+		list[i - 1] = tmp;
+	}*/
 	/*if (list.size() == 0 || Tools::will_mutate(Tools::Add_New_Polygon_Rate)) {
 	}
 	else {
@@ -130,9 +136,9 @@ void Polygons::mutate() {
 		list[i].mutate();
 }
 
-Mat Polygons::render() {
+Mat Polygons::render() const {
 	Mat img(Tools::Max_Height, Tools::Max_Width, CV_8UC3, Scalar(0, 0, 0));
-	for (int i = list.size() - 1; i >= 0; --i) {
+	for (int i = 0; i < list.size(); ++i) {
 		list[i].render_on(img);
 	}
 	return img;

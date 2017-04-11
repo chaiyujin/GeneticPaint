@@ -1,5 +1,6 @@
 #include "triangle.h"
 #include "polygon.h"
+#include "genetic.h"
 using namespace cv;
 using namespace std;
 using namespace Yuki;
@@ -12,6 +13,27 @@ void polygon_draw();
 int main() {
 	//triangle_draw();
 	polygon_draw();
+
+	/*Mat image = imread("small.jpg");
+	Group<Polygons> group(image);
+	group.generate_chromosome(10);
+	int iter = 0;
+	while (1) {
+		group = group.evolve(0.6);
+
+		auto &best = group[0];
+		auto &polys = best.shape;
+		double error = best.error;
+		if (iter % 100 == 0) {
+			auto img = best.render();
+			imshow("image", img);
+			waitKey(1);
+		}
+		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
+			iter++, polys.size(),
+			polys.size_of_vertices() / (float)polys.size(),
+			error);
+	}*/
 
 	system("pause");
 	return 0;

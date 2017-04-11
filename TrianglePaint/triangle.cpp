@@ -115,15 +115,18 @@ Color random_color() {
 	c.r = (byte)Tools::random_int(0, 256);
 	c.g = (byte)Tools::random_int(0, 256);
 	c.b = (byte)Tools::random_int(0, 256);
-	c.a = (byte)Tools::random_int(0, 256);
+	c.a = (byte)Tools::random_int(Tools::Alpha_Min, Tools::Alpha_Max);
 	return c;
 }
 
 void Color::mutate() {
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		if (Tools::will_mutate(Tools::Color_Mutate_Rate)) {
 			(*this)[i] = (byte)Tools::random_int(Tools::Color_Min, Tools::Color_Max);
 		}
+	}
+	if (Tools::will_mutate(Tools::Color_Mutate_Rate)) {
+		(*this)[3] = (byte)Tools::random_int(Tools::Alpha_Min, Tools::Alpha_Max);
 	}
 }
 

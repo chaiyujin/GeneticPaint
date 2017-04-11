@@ -42,6 +42,8 @@ int Tools::Vertex_Min_Move_Range = 1;
 int Tools::Color_Mutate_Rate = 1500;
 int Tools::Color_Min = 0;
 int Tools::Color_Max = 256;
+int Tools::Alpha_Min = 30;
+int Tools::Alpha_Max = 60;
 // triangle
 int Tools::Add_Triangle_Rate = 500;
 int Tools::Add_New_Triangle_Rate = 2;
