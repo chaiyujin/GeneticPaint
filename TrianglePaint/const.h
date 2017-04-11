@@ -24,9 +24,19 @@ public:
 	// color
 	static int Color_Mutate_Rate;
 	static int Color_Min, Color_Max;
-	// triangle
+	// triangles
 	static int Add_Triangle_Rate;
 	static int Add_New_Triangle_Rate;
 	static int Remove_Triangle_Rate;
 	static int Move_Triangle_Rate;
+	// Polygon
+	static int Max_Vertices;
+	static int Add_Vertex_Rate;
+	static int Remove_Vertex_Rate;
+	static int Move_Vertex_Rate;
+	// Polygons
+	static int Add_Polygon_Rate;
+	static int Add_New_Polygon_Rate;
+	static int Remove_Polygon_Rate;
+	static int Move_Polygon_Rate;
 };

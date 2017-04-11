@@ -47,3 +47,13 @@ int Tools::Add_Triangle_Rate = 500;
 int Tools::Add_New_Triangle_Rate = 2;
 int Tools::Remove_Triangle_Rate = 1200;
 int Tools::Move_Triangle_Rate = 500;
+// Polygon
+int Tools::Max_Vertices = 50;
+int Tools::Add_Vertex_Rate = 200;
+int Tools::Remove_Vertex_Rate = 800;
+int Tools::Move_Vertex_Rate = 800;
+// Polygons
+int Tools::Add_Polygon_Rate = 200;
+int Tools::Add_New_Polygon_Rate = 2;
+int Tools::Remove_Polygon_Rate = 800;
+int Tools::Move_Polygon_Rate = 500;
