@@ -88,17 +88,19 @@ void polygon_draw(string input_file, string output_file, double output_scale) {
 	Yuki::Directory::mkdir("result");
 	Mat image = imread(input_file);
 	{
-		int old_w = image.cols;
-		int old_h = image.rows;
-		double scale = old_w / 256.0;
-		if (old_h > old_w) scale = old_h / 256.0;
-		// size of now
-		Tools::Max_Width = old_w / scale;
-		Tools::Max_Height = old_h / scale;
-		Tools::Max_Width = Tools::clamp(Tools::Max_Width, 0, 256);
-		Tools::Max_Height = Tools::clamp(Tools::Max_Height, 0, 256);
-		scale = (double)old_w / (double)Tools::Max_Width;
-		Tools::Render_Scale = scale * output_scale;
+		//int old_w = image.cols;
+		//int old_h = image.rows;
+		//double scale = old_w / 256.0;
+		//if (old_h > old_w) scale = old_h / 256.0;
+		//// size of now
+		//Tools::Max_Width = old_w / scale;
+		//Tools::Max_Height = old_h / scale;
+		//Tools::Max_Width = Tools::clamp(Tools::Max_Width, 0, 256);
+		//Tools::Max_Height = Tools::clamp(Tools::Max_Height, 0, 256);
+		//scale = (double)old_w / (double)Tools::Max_Width;
+		//Tools::Render_Scale = scale * output_scale;
+		Tools::Max_Width = image.cols;
+		Tools::Max_Height = image.rows;
 
 		// scale origin image
 		resize(image, image, Size(Tools::Max_Width, Tools::Max_Height));
@@ -117,7 +119,7 @@ void polygon_draw(string input_file, string output_file, double output_scale) {
 			error = next_err;
 		}
 		if (iter % 1000 == 0) {
-			auto img = polys.render(Tools::Render_Scale);
+			auto img = polys.render();
 			imshow("image", img);
 			waitKey(1);
 			if (iter % 10000 == 0) {

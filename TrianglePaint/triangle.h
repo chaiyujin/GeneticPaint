@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 typedef unsigned char byte;
+typedef unsigned short uint16;
 
 double difference_between(cv::Mat img0, cv::Mat img1);
 double similarity_between(cv::Mat img0, cv::Mat img1);
@@ -14,14 +15,14 @@ private:
 
 public:
 	Vertex() : x(0), y(0) {}
-	byte x, y;
+	uint16 x, y;
 
-	byte &operator[](int index) {
+	uint16 &operator[](int index) {
 		CHECK(index >= 0 && index < 2);
 		if (index == 0) return x;
 		else return y;
 	}
-	const byte &operator[](int index) const {
+	const uint16 &operator[](int index) const {
 		CHECK(index >= 0 && index < 2);
 		if (index == 0) return x;
 		else return y;
