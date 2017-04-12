@@ -41,15 +41,7 @@ void Polygon::mutate(bool mutate_vertex, bool mutate_color) {
 	color.mutate();
 }
 
-void Polygon::render_on(cv::Mat canvas) const {
-	/*for (int i = 0; i + 2 < vertices.size(); ++i) {
-		Triangle triangle;
-		triangle.v[0] = vertices[i];
-		triangle.v[1] = vertices[i + 1];
-		triangle.v[2] = vertices[i + 2];
-		triangle.color = color;
-		render_triangle(canvas, triangle);
-	}*/
+void Polygon::render_on(cv::Mat canvas, double render_scale) const {
 
 	std::vector<std::pair<int, int>> range;
 	std::pair<int, int> min_max;
@@ -60,11 +52,11 @@ void Polygon::render_on(cv::Mat canvas) const {
 		range.push_back(min_max);
 
 	for (int i = 0; i < size(); ++i) {
-		auto x1 = vertices[i].x;
-		auto y1 = vertices[i].y;
+		int x1 = vertices[i].x * render_scale;
+		int y1 = vertices[i].y * render_scale;
 		int j = i + 1; if (j >= size()) j %= size();
-		auto x2 = vertices[j].x;
-		auto y2 = vertices[j].y;
+		int x2 = vertices[j].x * render_scale;
+		int y2 = vertices[j].y * render_scale;
 		draw_line(x1, y1, x2, y2, range);
 	}
 
@@ -141,10 +133,10 @@ void Polygons::mutate() {
 		list[i].mutate();
 }
 
-Mat Polygons::render() const {
-	Mat img(Tools::Max_Height, Tools::Max_Width, CV_8UC3, Scalar(0, 0, 0));
+Mat Polygons::render(double render_scale) const {
+	Mat img(Tools::Max_Height * render_scale, Tools::Max_Width * render_scale, CV_8UC3, Scalar(0, 0, 0));
 	for (int i = 0; i < list.size(); ++i) {
-		list[i].render_on(img);
+		list[i].render_on(img, render_scale);
 	}
 	return img;
 }

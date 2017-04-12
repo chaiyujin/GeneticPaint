@@ -13,6 +13,7 @@ public:
 	static bool will_mutate(int rate);
 	static void config_from(const char *file_path);
 	// image
+	static double Render_Scale;
 	static int Max_Width;
 	static int Max_Height;
 	// vertex

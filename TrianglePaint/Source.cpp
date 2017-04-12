@@ -1,39 +1,28 @@
 #include "triangle.h"
 #include "polygon.h"
 #include "genetic.h"
+#include <string>
 using namespace cv;
 using namespace std;
 using namespace Yuki;
 
+// test
 void test();
 void test_poly();
 void triangle_draw();
-void polygon_draw();
+void group_draw();
 
-int main() {
-	//triangle_draw();
-	polygon_draw();
+// main loop
+void polygon_draw(string input_file, string output_path, double scale);
 
-	/*Mat image = imread("small.jpg");
-	Group<Polygons> group(image);
-	group.generate_chromosome(10);
-	int iter = 0;
-	while (1) {
-		group = group.evolve(0.6);
-
-		auto &best = group[0];
-		auto &polys = best.shape;
-		double error = best.error;
-		if (iter % 100 == 0) {
-			auto img = best.render();
-			imshow("image", img);
-			waitKey(1);
-		}
-		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
-			iter++, polys.size(),
-			polys.size_of_vertices() / (float)polys.size(),
-			error);
-	}*/
+int main(int argc, char **argv) {
+	string input_file = "sample.jpg";
+	string output_file = "result.jpg";
+	double scale = 1;
+	if (argc > 1) input_file = argv[1];
+	if (argc > 2) output_file = argv[2];
+	if (argc > 3) scale = atof(argv[3]);
+	polygon_draw(input_file, output_file, scale);
 
 	system("pause");
 	return 0;
@@ -95,14 +84,29 @@ void triangle_draw() {
 	}
 }
 
-void polygon_draw() {
+void polygon_draw(string input_file, string output_file, double output_scale) {
 	Yuki::Directory::mkdir("result");
-	Mat image = imread("small.jpg");
+	Mat image = imread(input_file);
+	{
+		int old_w = image.cols;
+		int old_h = image.rows;
+		double scale = old_w / 256.0;
+		if (old_h > old_w) scale = old_h / 256.0;
+		// size of now
+		Tools::Max_Width = old_w / scale;
+		Tools::Max_Height = old_h / scale;
+		Tools::Max_Width = Tools::clamp(Tools::Max_Width, 0, 256);
+		Tools::Max_Height = Tools::clamp(Tools::Max_Height, 0, 256);
+		scale = (double)old_w / (double)Tools::Max_Width;
+		Tools::Render_Scale = scale * output_scale;
+
+		// scale origin image
+		resize(image, image, Size(Tools::Max_Width, Tools::Max_Height));
+		imshow("target", image);
+		waitKey(1);
+	}
 	Polygons polys;
 	int iter = 0;
-	int last_size = -1;
-	int same_size_count = 0;
-	int Refresh_Limit = 5000;
 	double error = polys.difference_with(image);
 	while (1) {
 		Polygons next(polys);
@@ -113,31 +117,39 @@ void polygon_draw() {
 			error = next_err;
 		}
 		if (iter % 1000 == 0) {
-			auto img = polys.render();
+			auto img = polys.render(Tools::Render_Scale);
 			imshow("image", img);
 			waitKey(1);
-			if (iter > 200000 && iter % 10000 == 0) {
-				char buf[512];
-				sprintf(buf, "result/iter%d.jpg", iter);
-				imwrite(buf, img);
+			if (iter % 10000 == 0) {
+				imwrite(output_file, img);
 			}
 		}
 		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
 			iter++, polys.size(), 
 			polys.size_of_vertices() / (float)polys.size(),
 			error);
-		if (polys.size() == last_size) {
-			++same_size_count;
+	}
+}
+
+void group_draw() {
+	Mat image = imread("small.jpg");
+	Group<Polygons> group(image);
+	group.generate_chromosome(10);
+	int iter = 0;
+	while (1) {
+		group = group.evolve(0.6);
+
+		auto &best = group[0];
+		auto &polys = best.shape;
+		double error = best.error;
+		if (iter % 100 == 0) {
+			auto img = best.render();
+			imshow("image", img);
+			waitKey(1);
 		}
-		else {
-			same_size_count = 1;
-		}
-		if (same_size_count > Refresh_Limit &&
-			Tools::Add_Polygon_Rate > 6) {
-			//Tools::Add_Polygon_Rate /= 2;
-			Refresh_Limit += 5000;
-			//Tools::update_rate();
-		}
-		last_size = polys.size();
+		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
+			iter++, polys.size(),
+			polys.size_of_vertices() / (float)polys.size(),
+			error);
 	}
 }

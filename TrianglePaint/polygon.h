@@ -35,7 +35,7 @@ public:
 	//void move();
 	void mutate(bool vertex = true, bool color = true);
 
-	void render_on(cv::Mat canvas) const;
+	void render_on(cv::Mat canvas, double render_scale = 1) const;
 };
 
 class Polygons {
@@ -74,7 +74,7 @@ public:
 	void remove();
 	void move();
 	void mutate();
-	cv::Mat render() const;
+	cv::Mat render(double render_scale = 1) const;
 	double difference_with(cv::Mat &image) {
 		auto img = render();
 		return difference_between(img, image);

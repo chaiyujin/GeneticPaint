@@ -26,9 +26,11 @@ void draw_line(int x1, int y1, int x2, int y2, vector<pair<int, int>> &range) {
 	eps = 0; dx = abs(dx); dy = abs(dy);
 	if (dx > dy) {
 		for (x = x1; x != x2; x += ux) {
-			if (x < range[y].first) range[y].first = x;
-			if (x > range[y].second) range[y].second = x;
-			
+			if (y < range.size()) {
+				if (x < range[y].first) range[y].first = x;
+				if (x > range[y].second) range[y].second = x;
+			}
+
 			eps += dy;
 			if ((eps << 1) >= dx) {
 				y += uy; eps -= dx;
@@ -37,8 +39,10 @@ void draw_line(int x1, int y1, int x2, int y2, vector<pair<int, int>> &range) {
 	}
 	else {
 		for (y = y1; y != y2; y += uy) {
-			if (x < range[y].first) range[y].first = x;
-			if (x > range[y].second) range[y].second = x;
+			if (y < range.size()) {
+				if (x < range[y].first) range[y].first = x;
+				if (x > range[y].second) range[y].second = x;
+			}
 
 			eps += dx;
 			if ((eps << 1) >= dy) {
@@ -68,11 +72,11 @@ void render_triangle(cv::Mat canvas, const Triangle &triangle) {
 
 	float alpha = triangle.color.a / 255.f;
 
-//#pragma omp parallel for schedule(dynamic)
 	for (int r = 0; r < canvas.rows; ++r) {
 		byte *data = canvas.ptr<byte>(r);
 		min_max = range[r];
 		for (int c = min_max.first; c <= min_max.second; ++c) {
+			if (c >= canvas.cols) break;
 			for (int k = 0; k < 3; ++k) {
 				data[c * 3 + k] = (byte)(data[c * 3 + k] * (1 - alpha) + triangle.color[2 - k] * alpha);
 			}

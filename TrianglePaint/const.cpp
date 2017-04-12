@@ -30,6 +30,7 @@ void Tools::config_from(const char *file_path) {
 }
 
 // image
+double Tools::Render_Scale = 1;
 int Tools::Max_Width = 256;
 int Tools::Max_Height = 256;
 // vertex
