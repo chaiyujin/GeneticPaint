@@ -96,6 +96,7 @@ void triangle_draw() {
 }
 
 void polygon_draw() {
+	Yuki::Directory::mkdir("result");
 	Mat image = imread("small.jpg");
 	Polygons polys;
 	int iter = 0;
@@ -116,14 +117,14 @@ void polygon_draw() {
 			imshow("image", img);
 			waitKey(1);
 			if (iter > 200000 && iter % 10000 == 0) {
-				imwrite("result.jpg", img);
+				char buf[512];
+				sprintf(buf, "result/iter%d.jpg", iter);
+				imwrite(buf, img);
 			}
 		}
-		LOG("Iter %d, Polygons %d, Points %f, NewPolyRate %d, Limit %d, Err %f\r",
+		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
 			iter++, polys.size(), 
 			polys.size_of_vertices() / (float)polys.size(),
-			Tools::Add_Polygon_Rate,
-			Refresh_Limit,
 			error);
 		if (polys.size() == last_size) {
 			++same_size_count;
