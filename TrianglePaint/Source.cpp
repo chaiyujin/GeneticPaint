@@ -16,13 +16,15 @@ void group_draw();
 void polygon_draw(string input_file, string output_path, double scale);
 
 int main(int argc, char **argv) {
-	string input_file = "sample.jpg";
+	string input_file = "small.jpg";
 	string output_file = "result.jpg";
 	double scale = 1;
 	if (argc > 1) input_file = argv[1];
 	if (argc > 2) output_file = argv[2];
 	if (argc > 3) scale = atof(argv[3]);
 	polygon_draw(input_file, output_file, scale);
+
+	//group_draw();
 
 	system("pause");
 	return 0;
@@ -88,17 +90,6 @@ void polygon_draw(string input_file, string output_file, double output_scale) {
 	Yuki::Directory::mkdir("result");
 	Mat image = imread(input_file);
 	{
-		//int old_w = image.cols;
-		//int old_h = image.rows;
-		//double scale = old_w / 256.0;
-		//if (old_h > old_w) scale = old_h / 256.0;
-		//// size of now
-		//Tools::Max_Width = old_w / scale;
-		//Tools::Max_Height = old_h / scale;
-		//Tools::Max_Width = Tools::clamp(Tools::Max_Width, 0, 256);
-		//Tools::Max_Height = Tools::clamp(Tools::Max_Height, 0, 256);
-		//scale = (double)old_w / (double)Tools::Max_Width;
-		//Tools::Render_Scale = scale * output_scale;
 		Tools::Max_Width = image.cols;
 		Tools::Max_Height = image.rows;
 
@@ -123,17 +114,57 @@ void polygon_draw(string input_file, string output_file, double output_scale) {
 			imshow("image", img);
 			waitKey(1);
 			if (iter % 10000 == 0) {
-				imwrite(output_file, img);
+				char buf[512];
+				sprintf(buf, "result/iter%d.jpg", iter);
+				imwrite(buf, img);
 			}
 		}
 		LOG("Iter %d, Polygons %d, Points %f, Err %f\r",
 			iter++, polys.size(), 
 			polys.size_of_vertices() / (float)polys.size(),
 			error);
+		// hack
+		if (iter % 100000 == 0) {
+			Tools::Add_Polygon_Rate /= 2;
+			if (Tools::Add_Polygon_Rate < 5) Tools::Add_Polygon_Rate = 5;
+		}
 	}
 }
 
 void group_draw() {
+
+	Polygons p0, p1;
+	for (int i = 0; i < 5; ++i) {
+		p0.add();
+		p1.add();
+	}
+	for (int i = 0; i < 1000; ++i) {
+		p0.mutate();
+		p1.mutate();
+	}
+
+	{
+		auto img0 = p0.render();
+		auto img1 = p1.render();
+		imshow("img0", img0);
+		imshow("img1", img1);
+		waitKey();
+	}
+
+	Chromosome<Polygons> ch0(p0);
+	Chromosome<Polygons> ch1(p1);
+	ch0.cross_with(ch1);
+
+	{
+		auto img0 = ch0.render();
+		auto img1 = ch1.render();
+		imshow("img0", img0);
+		imshow("img1", img1);
+		waitKey();
+	}
+
+
+
 	Mat image = imread("small.jpg");
 	Group<Polygons> group(image);
 	group.generate_chromosome(10);

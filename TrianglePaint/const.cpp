@@ -44,7 +44,7 @@ int Tools::Color_Mutate_Rate = 1500;
 int Tools::Color_Min = 0;
 int Tools::Color_Max = 256;
 int Tools::Alpha_Min = 30;
-int Tools::Alpha_Max = 60;
+int Tools::Alpha_Max = 150;
 // triangle
 int Tools::Add_Triangle_Rate = 700;
 int Tools::Add_New_Triangle_Rate = 2;
